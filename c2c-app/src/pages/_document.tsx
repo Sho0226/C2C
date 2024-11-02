@@ -1,9 +1,8 @@
-import { init } from "next/dist/compiled/webpack/webpack";
-import { Html, Head, Main, NextScript, DocumentContext, DocumentInitialProps } from "next/document";
+import Document, from "next/document";{  DocumentContext, DocumentInitialProps } from "next/document";
 import { ServerStyleSheet } from "styled-components";
 
 export default class MyDocument extends Document {
-  static async getInitalProps(
+  static async getInitialProps(
     ctx: DocumentContext,
   ): Promise<DocumentInitialProps> {
     const sheet = new ServerStyleSheet()
@@ -15,15 +14,21 @@ export default class MyDocument extends Document {
           enhanceApp: (App) => (props) => 
             sheet.collectStyles(<App {...props} />),
         })
-    const intialProps = await Document.
+
+    const initialProps = await Document.getInitialProps(ctx)
       
    return {
-    ...init
+    ...initialProps,
     styles: [
-
+      <>
+      {initialProps.styles}
+      {sheet.getStyleElement()}
+      </>,
     ],
-  } finally{
+  }
+ } finally{
     sheet.seal()
   }
-}}
 }
+}
+
